@@ -4,13 +4,15 @@
 
 //////////////////////
 const net = require('net');
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 const uri = process.argv[2];
 
 
 
 const client = new net.Socket();
-if(uri=== "localhost"){
+//To establish a connection to localhost
+if(uri === "localhost"){
+  //socket.connect (path, host ) host defaults to localhost
   client.connect(8080, uri, () => {
     client.write(standardHeaderClient(uri));
     console.log('Connected to remote address: ' + client.remoteAddress );
@@ -22,6 +24,9 @@ if(uri=== "localhost"){
     });
   }
 }
+
+
+
 client.setEncoding('utf8');
 
 function standardHeaderClient (uri){
