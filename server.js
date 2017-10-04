@@ -40,23 +40,25 @@ const server = net.createServer((request) =>{
   });
 });
 */
-    if(uri){
+
       let filePath = "." + uri ;
+
+
+
+
       console.log('FILEPATH:' + filePath);
       fs.readFile(filePath, (err, data) => {
         if (err){
-          console.log(standardHeader('error404.html') + data);
-          request.write(standardHeader('error404.html') + data);
-        }else if(filePath === './'){
-          request.write(standardHeader('index.html') + data.toString());
-          console.log(standardHeader('index.html') + data.toString());
+          fs.readFile('error404.html', (err, data)=>{
+            request.write(standardHeader('error404.html') + data.toString());
+            console.log(standardHeader('error404.html') + data.toString());
+          });
         }else{
           request.write(standardHeader(filePath) + data.toString());
           console.log(standardHeader(filePath) + data.toString());
           request.end();
         }
       });
-    }
   });
 });
 
@@ -67,12 +69,12 @@ server.listen(PORT, () => {
     console.log(`Server listening on port: ${PORT}`);
 });
 
-function standardHeader (data){
+function standardHeader (filePath){
   return `HTTP/1.1 200 OK
   Server: mozilla 5.0
   Date: ${new Date()}
   Content-Type: text/html; charset=utf-8;
-  Content-Length: ${data.length}
+  Content-Length: ${filePath.length}
   Connection: keep-alive;
 
   `;
