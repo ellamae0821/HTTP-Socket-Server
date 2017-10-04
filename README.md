@@ -33,6 +33,7 @@ _note, all data must be stored in memory, that is, in javascript only. external 
 1. Date : The current timestamp should be sent in RFC1123 format
 1. Server : The name of your custom http server
 
+
 ### Testing
 
 run your server with _nodemon_
@@ -172,3 +173,19 @@ node client.js -save devleague.com_index.html http://www.devleague.com
 ```
 
 would save the contents of the response message from requesting http://www.devleague.com to a file named `devleague.com_index.html`
+
+
+const writeHeader = (fileName, fileType, status) => {
+return `HTTP/1.1 ${status}
+Content-Type: text/${fileType}
+Content-Length: ${fileName.length}
+Date: ${new Date().toUTCString()}
+Server: GaganWebsite
+
+${fileName}`;
+};
+
+const displayIndex = (request) => {
+request.write(writeHeader(indexHTML, 'html', '200 OK'));
+request.end();
+};
